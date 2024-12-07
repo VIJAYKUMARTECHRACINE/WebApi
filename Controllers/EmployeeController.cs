@@ -52,7 +52,7 @@ namespace WebApi1.Controllers
             }
             catch (Exception ex)
             {
-
+                
             }
             return Ok(employees);
         }
@@ -66,16 +66,17 @@ namespace WebApi1.Controllers
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
             try
             {
-                using(SqlConnection con = new SqlConnection(connectionString)){
+                using(MySqlConnection con = new MySqlConnection(connectionString)){
                     con.Open();
                     string query = "Insert into timesheetdetails(Employee_Name,Employee_Task,Employee_Notes,EntryDateTime) values(@Employee_Name,@Employee_Task,@Employee_Notes,@EntryDateTime)";
-                    SqlCommand cmd = new SqlCommand(query, con);
+                    MySqlCommand cmd = new MySqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@Employee_Name", Employeename);
                     cmd.Parameters.AddWithValue("@Employee_Task", emp.Employeetask);
                     cmd.Parameters.AddWithValue("@Employee_Notes", emp.Employeenotes);
                     cmd.Parameters.AddWithValue("@EntryDateTime", emp.Datetime);
                     int res=cmd.ExecuteNonQuery();
                     if (res > 0) {
+                        Console.WriteLine("User Created Successfully.");
                         return Ok(new
                         {
                             Message = "User Created Successfully.",
@@ -91,8 +92,7 @@ namespace WebApi1.Controllers
                 
                 
             }
-            catch (Exception ex) { 
-                
+            catch (Exception ex) {
             }
             return Ok();
         }
